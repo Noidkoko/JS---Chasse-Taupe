@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHASSE TAUPE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+    <h1>Cliquez pour commencer !</h1><p class="score"></p> <p class="moyenne"></p>
+    <div id="app">
+        <div v-html="taupe" class="grid">
+            <div class="taupe-item">
+                <img src="taupe.png" class="taupe">
+            </div>    
+        </div>
+    </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="app.js"></script>
+<script>
+let moyenneScore = []
+let sum = 0
+let moyenne = document.querySelector('.moyenne')
+document.querySelector('.taupe').addEventListener('click', start())
+function start() {
+    let timeNew = new Date
+    let displayScore = document.querySelector('.score')
+    let taupe = document.querySelector('.taupe')
+    let grid = document.querySelector('.grid')
+    let taupeItem = document.querySelector('.taupe-item')
+    let taupeDiv = document.createElement('div')
+    taupeDiv.classList.add("taupe-item")
+    let taupeImg = document.createElement('img')
+    taupeImg.src = "taupe.png"
+    taupeImg.classList.add('taupe')
+    taupe.addEventListener('click', (e) => {
+        let title = document.querySelector('h1')
+        title.textContent = "Votre score"
+        let timeNow = new Date
+        taupeItem.removeChild(e.target)
+        grid.removeChild(taupeItem)
+        let randomX = Math.floor(Math.random() * 6) +1
+        let randomY =  Math.floor(Math.random() * 6) +1
+        let pos = "grid-area:" + randomY + " / " + randomX 
+        taupeDiv.style = pos
+        taupeDiv.appendChild(taupeImg)
+        grid.appendChild(taupeDiv)
+        let score = timeNow - timeNew
+        moyenneScore.push(score)
+        sum += moyenneScore[moyenneScore.length-1]
+        moy = sum/moyenneScore.length
+        moyenne.textContent = "Votre moyenne : " + Math.round(moy) + " ms"
+        displayScore.textContent = score + " ms"
+        start()
+    })
+    
+
+}
+</script>
+</html>
